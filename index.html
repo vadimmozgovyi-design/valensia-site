@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ресторанно-банкетний комплекс Валенsіа у Вінниці: найвищий рівень гостинності, авторська кухня та незабутня атмосфера.">
+  <title>Валенsіа | Elite Restaurant & Banquets</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+            display: ['Cinzel', 'serif']
+          },
+          colors: {
+            gold: {
+              light: '#f1d27b',
+              DEFAULT: '#d4af37',
+              dark: '#aa8a2e'
+            },
+            onyx: '#0a0a0a',
+            obsidian: '#050505'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    html { scroll-behavior: smooth; }
+    body { 
+      background-color: #050505; 
+      color: #e5e5e5; 
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #f1d27b 0%, #d4af37 50%, #aa8a2e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu-line {
+      height: 1px;
+      width: 24px;
+      background-color: #d4af37;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: absolute;
+    }
+    .line-1 { transform: translateY(-8px); }
+    .line-2 { transform: scaleX(1); opacity: 1; }
+    .line-3 { transform: translateY(8px); }
+
+    #mobile-menu-toggle:checked ~ label .line-1 { transform: translateY(0) rotate(45deg); }
+    #mobile-menu-toggle:checked ~ label .line-2 { transform: scaleX(0); opacity: 0; }
+    #mobile-menu-toggle:checked ~ label .line-3 { transform: translateY(0) rotate(-45deg); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { animation: fadeIn 1.2s cubic-bezier(0.2, 1, 0.3, 1) both; }
+
+    .btn-premium {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      background: linear-gradient(135deg, #d4af37, #aa8a2e);
+      color: #050505;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+    }
+    .btn-premium::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -100%;
+      width: 50%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(30deg);
+      transition: none;
+    }
+    .btn-premium:hover::after {
+      left: 150%;
+      transition: all 0.8s ease;
+    }
+    .btn-premium:hover {
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    [x-cloak] { display: none !important; }
+
+    .reveal { 
+      opacity: 0; 
+      transform: translateY(30px);
+      transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050505; }
+    ::-webkit-scrollbar-thumb { background: #d4af37; }
+
+    .hero-overlay {
+      background: radial-gradient(circle at center, transparent 0%, rgba(5, 5, 5, 0.8) 100%);
+    }
+
+    .tab-active {
+      color: #d4af37;
+      border-bottom: 1px solid #d4af37;
+    }
+  </style>
+<body class="font-sans" x-data="{ mobileMenu: false, menuTab: 1 }">
+
+  <!-- Navigation -->
+  <header class="fixed top-0 inset-x-0 z-[100] transition-all duration-500 glass border-b border-gold/10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+      <a href="#top" class="flex flex-col items-center group">
+        <span class="font-display text-2xl lg:text-3xl tracking-[0.2em] text-gradient font-bold">Валенsіа</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-12">
+        <a href="#about" class="text-[11px] uppercase tracking-[0.2em] text-white/70 hover:text-gold transition-colors">Легенда</a>
+        <a href="#menu" class="text-[11px] uppercase tracking-[0.2em] text-white/70 hover:text-gold transition-colors">Меню</a>
+        <a href="#contacts" class="text-[11px] uppercase tracking-[0.2em] text-white/70 hover:text-gold transition-colors">Локація</a>
+        <a href="#booking-form" class="btn-premium px-8 py-3 text-[10px] rounded-sm">Забронювати</a>
+      </nav>
+
+      <!-- Mobile Toggle -->
+      <div class="md:hidden relative h-6 w-6">
+        <input id="mobile-menu-toggle" type="checkbox" class="peer hidden" x-model="mobileMenu">
+        <label for="mobile-menu-toggle" class="absolute inset-0 z-50 cursor-pointer flex items-center justify-center">
+          <span class="menu-line line-1"></span>
+          <span class="menu-line line-2"></span>
+          <span class="menu-line line-3"></span>
+        </label>
+        
+        <!-- Mobile Dropdown -->
+        <div class="fixed inset-0 bg-obsidian transition-all duration-500 z-40 flex items-center justify-center" 
+             x-show="mobileMenu" 
+             x-cloak
+             x-transition:enter="opacity-0" 
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="opacity-100"
+             x-transition:leave-end="opacity-0">
+          <nav class="flex flex-col items-center gap-10">
+            <a href="#about" @click="mobileMenu = false" class="text-2xl font-display tracking-widest text-white hover:text-gold">Легенда</a>
+            <a href="#menu" @click="mobileMenu = false" class="text-2xl font-display tracking-widest text-white hover:text-gold">Меню</a>
+            <a href="#contacts" @click="mobileMenu = false" class="text-2xl font-display tracking-widest text-white hover:text-gold">Локація</a>
+            <a href="#booking-form" @click="mobileMenu = false" class="btn-premium px-10 py-4 text-sm rounded-sm">Бронювання</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="top" class="relative h-screen flex items-center justify-center overflow-hidden">
+      <img src="assets/premium-hero.png" class="absolute inset-0 w-full h-full object-cover scale-110 blur-[1px] brightness-[0.4]" alt="Elite Atmosphere">
+      <div class="absolute inset-0 hero-overlay"></div>
+      
+      <div class="relative z-10 text-center px-6 max-w-5xl reveal">
+        <p class="text-gold tracking-[0.5em] text-xs uppercase mb-8 opacity-80">Welcome to Excellence</p>
+        <h1 class="font-display text-5xl md:text-8xl lg:text-9xl mb-10 leading-tight">
+          Мистецтво <br> <span class="text-gradient">Смаку</span>
+        </h1>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-8 mt-12">
+          <a href="#booking-form" class="btn-premium px-12 py-5 text-xs w-full md:w-auto rounded-sm">Створити Подію</a>
+        </div>
+      </div>
+      
+      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40">
+        <span class="text-[9px] uppercase tracking-[0.3em] [writing-mode:vertical-lr]">Scroll</span>
+        <div class="w-[1px] h-16 bg-gradient-to-b from-gold to-transparent"></div>
+      </div>
+    </section>
+
+    <!-- Legend Section -->
+    <section id="about" class="py-32 px-6 bg-onyx">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
+        <div class="reveal">
+          <h2 class="font-display text-4xl md:text-5xl mb-8 leading-snug">
+            Більше ніж <span class="text-gradient italic">Ресторан</span>
+          </h2>
+          <p class="text-white/50 leading-loose text-sm mb-12 font-light">
+            Валенsіа — це маніфест високої кухні у Вінниці. Кожна деталь нашого інтер'єру, кожен інгредієнт у вашій тарілці та кожна посмішка персоналу підпорядковані одній меті: перетворити ваш візит на шедевр спогадів. 
+          </p>
+          <div class="grid grid-cols-2 gap-10">
+            <div>
+              <span class="block font-display text-3xl text-gold mb-2">100%</span>
+              <span class="text-[10px] uppercase tracking-widest text-white/40">Локальна Свіжість</span>
+            </div>
+            <div>
+              <span class="block font-display text-3xl text-gold mb-2">VIP</span>
+              <span class="text-[10px] uppercase tracking-widest text-white/40">Конфіденційність</span>
+            </div>
+          </div>
+        </div>
+        <div class="relative group reveal" style="animation-delay: 0.3s">
+          <div class="absolute inset-0 border border-gold/20 translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-700"></div>
+          <img src="assets/hero-complex.png" class="relative z-10 w-full h-[500px] object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700" alt="Interior">
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-32 px-6 bg-obsidian">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-20 reveal">
+          <h2 class="font-display text-4xl md:text-6xl mb-6 tracking-wider italic">Карта <span class="text-gradient not-italic">Смаків</span></h2>
+          <div class="w-24 h-[1px] bg-gold/50 mx-auto"></div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 md:gap-10 mb-16 reveal border-b border-white/5 pb-4">
+          <button @click="menuTab = 1" :class="menuTab === 1 ? 'text-gold border-b border-gold' : 'text-white/40'" class="pb-2 uppercase tracking-[0.2em] text-xs transition-all">Мангал та Бургери</button>
+          <button @click="menuTab = 2" :class="menuTab === 2 ? 'text-gold border-b border-gold' : 'text-white/40'" class="pb-2 uppercase tracking-[0.2em] text-xs transition-all">Закуски та Салати</button>
+          <button @click="menuTab = 3" :class="menuTab === 3 ? 'text-gold border-b border-gold' : 'text-white/40'" class="pb-2 uppercase tracking-[0.2em] text-xs transition-all">Перші та Основні</button>
+          <button @click="menuTab = 4" :class="menuTab === 4 ? 'text-gold border-b border-gold' : 'text-white/40'" class="pb-2 uppercase tracking-[0.2em] text-xs transition-all">Піца та Десерти</button>
+          <button @click="menuTab = 5" :class="menuTab === 5 ? 'text-gold border-b border-gold' : 'text-white/40'" class="pb-2 uppercase tracking-[0.2em] text-xs transition-all">Барна Карта</button>
+        </div>
+
+        <!-- Tab 1: Мангал меню, Бургери та До пива -->
+        <div x-show="menuTab === 1" x-transition class="grid md:grid-cols-2 gap-x-20 gap-y-6">
+          <template x-for="item in [
+            {name: 'Свинний шашлик', desc: 'ошийок, лаваш, цибуля, чері, соуси BBQ, Томатіно, Чімічурі', weight: '300 грам', price: '250 гривень'},
+            {name: 'Телячий шашлик', desc: 'телятина, лаваш, цибуля, чері, соуси BBQ, Томатіно, Чімічурі', weight: '300 грам', price: '285 гривень'},
+            {name: 'Курячий шашлик', desc: 'куряче філе, лаваш, цибуля, чері, соуси BBQ, Томатіно, Чімічурі', weight: '300 грам', price: '195 гривень'},
+            {name: 'Свинні ребра BBQ', desc: '', weight: '300 грам', price: '225 гривень'},
+            {name: 'Сет для компанії', desc: 'шашлик курячий, свинний, телячий, крильця, ковбаски свинні, курячі, соуси, лаваш, цибуля, чері', weight: '1000 грам', price: '900 гривень'},
+            {name: 'Сет для компанії №1', desc: '', weight: '1300 грам', price: '780 гривень'},
+            {name: 'Сет для компанії №2', desc: '', weight: '2000 грам', price: '1500 гривень'},
+            {name: 'Сет для компанії №3', desc: '', weight: '2500 грам', price: '1200 гривень'},
+            {name: 'Сет для компанії №4', desc: '', weight: '2800 грам', price: '1550 гривень'},
+            {name: 'Стейк з курячого стегна', desc: '', weight: '100 грам', price: '50 гривень'},
+            {name: 'Овочі на мангалі', desc: 'печериці, перець, томати, кабачок, цибуля, мікрогрін, бальзамік, кунжут', weight: '220 грам', price: '160 гривень'},
+            {name: 'Свинина на кістці з битим огірком', desc: '', weight: '400 грам', price: '350 гривень'},
+            {name: 'Свинина на кістці з овочами у вершковому соусі', desc: '', weight: '400 грам', price: '350 гривень'},
+            {name: 'Стейк свинний з овочами', desc: '', weight: '450 грам', price: '390 гривень'},
+            {name: 'Короп на мангалі', desc: '', weight: '100 грам', price: '70 гривень'},
+            {name: 'Короп на мангалі з цукровою кукурудзою у вершковому соусі', desc: '', weight: '100 грам', price: '83 гривень'},
+            {name: 'Скумбрія на мангалі', desc: '', weight: '100 грам', price: '75 гривень'},
+            {name: 'Дорадо на мангалі', desc: '', weight: '100 грам', price: '180 гривень'},
+            {name: 'Перепілка на мангалі з картоплею та овочами', desc: '', weight: '450 грам', price: '350 гривень'},
+            {name: 'Люля кебаб з телятини', desc: '', weight: '100 грам', price: '85 гривень'},
+            {name: 'Люля кебаб з курки', desc: '', weight: '100 грам', price: '65 гривень'},
+            {name: 'Вінницькі ковбаски на грилі', desc: 'мисливські, мисливські з сиром, баварські', weight: '600 грам', price: '450 гривень'},
+            {name: 'Ковбаски фірмові', desc: '', weight: '100 грам', price: '75 гривень'},
+            {name: 'Бургер з телятиною та беконом', desc: 'булочка, котлета, бекон, огірок, цибуля, томат, айсберг, гірчиця, BBQ, фрі, томатний соус', weight: '400 грам', price: '230 гривень'},
+            {name: 'Чізбургер з телятиною', desc: '', weight: '400 грам', price: '230 гривень'},
+            {name: 'Чізбургер з курятиною', desc: '', weight: '400 грам', price: '180 гривень'},
+            {name: 'Прошутто (до пива)', desc: '', weight: '50 грам', price: '100 гривень'},
+            {name: 'Бастурма теляча', desc: '', weight: '50 грам', price: '90 гривень'},
+            {name: 'Копчений сир косичка', desc: '', weight: '50 грам', price: '70 гривень'},
+            {name: 'Арахіс сіль/сир/бекон', desc: '', weight: '50 грам', price: '35 гривень'},
+            {name: 'Чіпси м\'ясні свинні', desc: '', weight: '50 грам', price: '125 гривень'},
+            {name: 'Чіпси м\'ясні курячі', desc: '', weight: '50 грам', price: '105 гривень'},
+            {name: 'Вушка свинні', desc: '', weight: '100 грам', price: '70 гривень'},
+            {name: 'Цибулеві кільця (фрі до пива)', desc: '', weight: '100 грам', price: '70 гривень'},
+            {name: 'Сирні палички', desc: '', weight: '120 грам', price: '100 гривень'},
+            {name: 'Часникові грінки', desc: '', weight: '100 грам', price: '70 гривень'},
+            {name: 'Креветка темпурі', desc: '', weight: '200 грам', price: '220 гривень'},
+            {name: 'Смажені пельмені', desc: 'подаються з соусом білим', weight: '150 грам', price: '105 гривень'},
+            {name: 'Кисло-солодкі крильця фрі', desc: '', weight: '220 грам', price: '150 гривень'},
+            {name: 'Гострі курячі крильця', desc: '', weight: '220 грам', price: '150 гривень'},
+            {name: 'Пивна дошка', desc: 'бастурма, часникові грінки, цибулеві кільця, сир косичка, мисливські ковбаски, тартар', weight: '300 грам', price: '300 гривень'}
+          ]">
+            <div class="border-b border-white/5 pb-4 flex flex-col group hover:border-gold/30 transition-colors">
+              <div class="flex justify-between items-end gap-4">
+                <span x-text="item.name" class="font-display text-sm tracking-widest text-white group-hover:text-gold transition-colors"></span>
+                <div class="flex-grow border-b border-dotted border-white/10 mb-1"></div>
+                <span x-text="item.price" class="text-gold text-xs font-semibold whitespace-nowrap"></span>
+              </div>
+              <div class="flex justify-between items-start mt-1">
+                <span x-text="item.desc" class="text-[9px] text-white/30 uppercase tracking-tighter max-w-[70%]"></span>
+                <span x-text="item.weight" class="text-[9px] text-white/20 italic"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Tab 2: Закуски та Салати -->
+        <div x-show="menuTab === 2" x-transition class="grid md:grid-cols-2 gap-x-20 gap-y-6">
+          <template x-for="item in [
+            {name: 'Фаршмак', desc: 'оселедець, грінки, лимон, яйце, яблуко', weight: '250 грам', price: '230 гривень'},
+            {name: 'Огірок п\'ятихвилинка', desc: 'огірок, зелень, часник, олія, оцет', weight: '200 грам', price: '120 гривень'},
+            {name: 'Підчеревина по Староміськи', desc: 'сало, цибуля, часник, чілі, зелень, хрін, гірчиця', weight: '300 грам', price: '220 гривень'},
+            {name: 'Лаваш Сулугуні з зеленню', desc: '', weight: '200 грам', price: '120 гривень'},
+            {name: 'Лаваш Сулугуні з томатом', desc: '', weight: '200 грам', price: '130 гривень'},
+            {name: 'Курячий паштет з тостами та ягідним кулі', desc: '', weight: '250 грам', price: '160 гривень'},
+            {name: 'Філе оселедця з печеною картоплею та грінками з бородінського хліба', desc: '', weight: '300 грам', price: '160 гривень'},
+            {name: 'Брускети з лососем Гравлакс', desc: '', weight: '160 грам', price: '190 гривень'},
+            {name: 'Брускета з Прошуто та карамелізованою грушею', desc: '', weight: '160 грам', price: '180 гривень'},
+            {name: 'Брускета з чері та Фетою', desc: '', weight: '160 грам', price: '140 гривень'},
+            {name: 'Брускета з карамелізованою грушею та Горгонзолою', desc: '', weight: '160 грам', price: '150 гривень'},
+            {name: 'Брускета з тигровою креветкою', desc: '', weight: '160 грам', price: '220 гривень'},
+            {name: 'Брускета з вугрем', desc: '', weight: '170 грам', price: '230 гривень'},
+            {name: 'Брускета Каліфорнія', desc: '', weight: '180 грам', price: '180 гривень'},
+            {name: 'Сет №1 Брускети з Прошуто, Фета, Горгонзола', desc: '', weight: '170 грам', price: '140 гривень'},
+            {name: 'Сет №2 Брускети з Лососем, Креветкою, Вугрем', desc: '', weight: '190 грам', price: '200 гривень'},
+            {name: 'Сет №3 Брускети з Лососем, Креветкою', desc: '', weight: '510 грам', price: '510 гривень'},
+            {name: 'Каліфорнія (сніжний краб)', desc: '', weight: '250 грам', price: '155 гривень'},
+            {name: 'Гриб староміський', desc: 'шампіньйони, папа роса, маринована цибуля, олія, зелень', weight: '250 грам', price: '120 гривень'},
+            {name: 'Квашена капуста з клюквою', desc: '', weight: '300 грам', price: '125 гривень'},
+            {name: 'Соління по-домашньому', desc: 'томати, огірки, капуста, цибуля маринована', weight: '300 грам', price: '120 гривень'},
+            {name: 'Овочева нарізка', desc: 'томідор, огірок, перець, зелень', weight: '300 грам', price: '120 гривень'},
+            {name: 'М\'ясна тарілка по-домашньому', desc: 'ковбаса домашня, буженина, копчене сало, гірчиця, хрін', weight: '300 грам', price: '290 гривень'},
+            {name: 'Асорті Італійських сирів', desc: 'брі, пармезан, горгонзола, моцарела бейбі, виноград, горіхи, мед, м\'ята', weight: '220 грам', price: '310 гривень'},
+            {name: 'Скумбрія пряного посолу', desc: 'скумбрія, картопля, грінки, маринована цибуля', weight: '250 грам', price: '170 гривень'},
+            {name: 'Тар тар з телячої вирізки з картопляним мусом', desc: '', weight: '250 грам', price: '290 гривень'},
+            {name: 'Тар тар Тунець', desc: '', weight: '200 грам', price: '310 гривень'},
+            {name: 'Креветка в темпурі (креветка, соус тартар)', desc: '', weight: '200 грам', price: '220 гривень'},
+            {name: 'Тар тар Лосось', desc: 'лосось, авокадо, батон французький, огірок, лимон', weight: '200 грам', price: '290 гривень'},
+            {name: 'Салат Валенсія', desc: 'мікс салату, креветка, авокадо, томати, огірок, перець, олія, унагі, бальзамік', weight: '260 грам', price: '260 гривень'},
+            {name: 'Фірмовий з Телятини', desc: 'рукола, телятина, чері, перець, горошок, яйце, горіховий соус, фісташка, пармезан', weight: '300 грам', price: '210 гривень'},
+            {name: 'Вітелло Тоннато', desc: '', weight: '260 грам', price: '280 гривень'},
+            {name: 'Салат із хрусткими баклажанами', desc: '', weight: '360 грам', price: '210 гривень'},
+            {name: 'Салат Волоський', desc: 'куряче філе, шампіньйон, помідори, мікс салату, горіховий соус', weight: '300 грам', price: '190 гривень'},
+            {name: 'Салат Гуцульський', desc: 'мікс салату, телятина, свинина, помідори, перець, маринована цибуля, соус гренадін', weight: '260 грам', price: '195 гривень'},
+            {name: 'Салат Капрізе', desc: '', weight: '220 грам', price: '180 гривень'},
+            {name: 'Салат Цезар з лососем', desc: '', weight: '300 грам', price: '250 гривень'},
+            {name: 'Салат Цезар з куркою та беконом', desc: '', weight: '250 грам', price: '180 гривень'},
+            {name: 'Салат теплий з телятини', desc: '', weight: '220 грам', price: '220 гривень'},
+            {name: 'Салат з вугрем', desc: '', weight: '220 грам', price: '280 гривень'},
+            {name: 'Салат з Прошуто', desc: '', weight: '220 грам', price: '220 гривень'},
+            {name: 'Мікс-салат з морепродуктами', desc: '', weight: '220 грам', price: '250 гривень'},
+            {name: 'Мікс-салат Італійський', desc: '', weight: '250 грам', price: '180 гривень'},
+            {name: 'Салат овочевий з Фетою', desc: '', weight: '220 грам', price: '150 гривень'},
+            {name: 'Салат овочевий з Авокадо', desc: '', weight: '220 грам', price: '170 гривень'},
+            {name: 'Салат Весняний', desc: '', weight: '200 грам', price: '90 гривень'}
+          ]">
+            <div class="border-b border-white/5 pb-4 flex flex-col group hover:border-gold/30 transition-colors">
+              <div class="flex justify-between items-end gap-4">
+                <span x-text="item.name" class="font-display text-sm tracking-widest text-white group-hover:text-gold transition-colors"></span>
+                <div class="flex-grow border-b border-dotted border-white/10 mb-1"></div>
+                <span x-text="item.price" class="text-gold text-xs font-semibold whitespace-nowrap"></span>
+              </div>
+              <div class="flex justify-between items-start mt-1">
+                <span x-text="item.desc" class="text-[9px] text-white/30 uppercase tracking-tighter max-w-[70%]"></span>
+                <span x-text="item.weight" class="text-[9px] text-white/20 italic"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Tab 3: Перші та Основні страви, Гарніри, Паста -->
+        <div x-show="menuTab === 3" x-transition class="grid md:grid-cols-2 gap-x-20 gap-y-6">
+          <template x-for="item in [
+            {name: 'Суп з морепродуктів Буябес', desc: '', weight: '450 грам', price: '230 гривень'},
+            {name: 'Суп Харчо', desc: '', weight: '450 грам', price: '160 гривень'},
+            {name: 'Суп з копченою куркою', desc: '', weight: '450 грам', price: '130 гривень'},
+            {name: 'Борщ з підчеревиною', desc: '', weight: '500 грам', price: '180 гривень'},
+            {name: 'Закарпатський Бограч', desc: '', weight: '500 грам', price: '190 гривень'},
+            {name: 'Солянка Фірмова', desc: '', weight: '450 грам', price: '190 гривень'},
+            {name: 'Грибний крем суп', desc: '', weight: '400 грам', price: '140 гривень'},
+            {name: 'Сирний суп з крутонами', desc: '', weight: '400 грам', price: '150 гривень'},
+            {name: 'Курячий бульйон з домашньої птиці', desc: '', weight: '400 грам', price: '90 гривень'},
+            {name: 'Смажена картопля по домашньому', desc: '', weight: '200 грам', price: '80 гривень'},
+            {name: 'Смажена картопля з грибами', desc: '', weight: '250 грам', price: '100 гривень'},
+            {name: 'Деруни', desc: '', weight: '200 грам', price: '130 гривень'},
+            {name: 'Деруни з грибами', desc: '', weight: '230 грам', price: '150 гривень'},
+            {name: 'Банош з бринзою та беконом', desc: '', weight: '300 грам', price: '180 гривень'},
+            {name: 'Пельмені', desc: '', weight: '250 грам', price: '140 гривень'},
+            {name: 'Вареники з картоплею', desc: '', weight: '250 грам', price: '90 гривень'},
+            {name: 'Вареники з сиром та шкварками', desc: '', weight: '250 грам', price: '100 гривень'},
+            {name: 'Вареники з вишнею', desc: '', weight: '250 грам', price: '90 гривень'},
+            {name: 'Куряча відбивна з картопляним пюре', desc: '', weight: '300 грам', price: '150 гривень'},
+            {name: 'М\'ясна пательня', desc: '', weight: '500 грам', price: '210 гривень'},
+            {name: 'Панська пательня', desc: '', weight: '400 грам', price: '230 гривень'},
+            {name: 'Пательня з куркою', desc: '', weight: '500 грам', price: '170 гривень'},
+            {name: 'Стейк з курячого філе під соусом дорблю', desc: '', weight: '260 грам', price: '300 гривень'},
+            {name: 'Стейк лосось з овочами', desc: '', weight: '430 грам', price: '480 гривень'},
+            {name: 'Котлета по Вінницьки', desc: '', weight: '300 грам', price: '180 гривень'},
+            {name: 'Котлети з індички і з Трюфельним пюре', desc: '', weight: '300 грам', price: '240 гривень'},
+            {name: 'Овочі у вершковому соусі', desc: '', weight: '180 грам', price: '130 гривень'},
+            {name: 'Млинці з м\'ясом', desc: '', weight: '200 грам', price: '160 гривень'},
+            {name: 'Млинець «Цезар» з куркою', desc: '', weight: '250 грам', price: '160 гривень'},
+            {name: 'Млинець «Цезар» з шинкою', desc: '', weight: '250 грам', price: '140 гривень'},
+            {name: 'Картопляне пюре (Гарнір)', desc: '', weight: '150 грам', price: '60 гривень'},
+            {name: 'Картопля Фрі', desc: '', weight: '150 грам', price: '80 гривень'},
+            {name: 'Картопляні Діпи', desc: '', weight: '150 грам', price: '85 гривень'},
+            {name: 'Картопля по уланівськи', desc: '', weight: '150 грам', price: '80 гривень'},
+            {name: 'Нагетси', desc: '', weight: '100 грам', price: '90 гривень'},
+            {name: 'Сирні палички (Гарнір)', desc: '', weight: '120 грам', price: '100 гривень'},
+            {name: 'Цибулеві кільця', desc: '', weight: '100 грам', price: '70 гривень'},
+            {name: 'Хлібна корзина', desc: '', weight: '120 грам', price: '40 гривень'},
+            {name: 'Карбонара (Паста)', desc: '', weight: '300 грам', price: '150 гривень'},
+            {name: 'Паста Неро з креветкою', desc: '', weight: '300 грам', price: '210 гривень'},
+            {name: 'Паста Фетучіні з креветкою', desc: '', weight: '300 грам', price: '220 гривень'},
+            {name: 'Паста Фарфале з грибами та куркою', desc: '', weight: '300 грам', price: '180 гривень'},
+            {name: 'Паста Пенне з чері та баклажаном', desc: '', weight: '300 грам', price: '190 гривень'},
+            {name: 'Морський окунь в тайському стилі', desc: '', weight: '300 грам', price: '350 гривень'},
+            {name: 'Мідії у вершково-сирному соусі з тостами із багета', desc: '', weight: '400 грам', price: '375 гривень'},
+            {name: 'Мідії у тосканському соусі з тостами із багета', desc: '', weight: '400 грам', price: '360 гривень'},
+            {name: 'Смажені карасики', desc: '', weight: '270 грам', price: '170 гривень'}
+          ]">
+            <div class="border-b border-white/5 pb-4 flex flex-col group hover:border-gold/30 transition-colors">
+              <div class="flex justify-between items-end gap-4">
+                <span x-text="item.name" class="font-display text-sm tracking-widest text-white group-hover:text-gold transition-colors"></span>
+                <div class="flex-grow border-b border-dotted border-white/10 mb-1"></div>
+                <span x-text="item.price" class="text-gold text-xs font-semibold whitespace-nowrap"></span>
+              </div>
+              <div class="flex justify-between items-start mt-1">
+                <span x-text="item.desc" class="text-[9px] text-white/30 uppercase tracking-tighter max-w-[70%]"></span>
+                <span x-text="item.weight" class="text-[9px] text-white/20 italic"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Tab 4: Піца, Десерти та Безалкогольні напої -->
+        <div x-show="menuTab === 4" x-transition class="grid md:grid-cols-2 gap-x-20 gap-y-6">
+          <template x-for="item in [
+            {name: 'Піца Меланзана', desc: '', weight: '550 грам', price: '270 гривень'},
+            {name: 'Піца Трюфельна', desc: '', weight: '550 грам', price: '270 гривень'},
+            {name: 'Маргарита', desc: '', weight: '450 грам', price: '140 гривень'},
+            {name: 'Піца з шинкою та грибами', desc: '', weight: '550 грам', price: '180 гривень'},
+            {name: 'Піца Папероні', desc: '', weight: '500 грам', price: '210 гривень'},
+            {name: 'Піца Мисливська', desc: '', weight: '550 грам', price: '210 гривень'},
+            {name: 'Піца 4 сира', desc: '', weight: '500 грам', price: '220 гривень'},
+            {name: 'Піца з грушею та горгонзолою', desc: '', weight: '500 грам', price: '220 гривень'},
+            {name: 'Піца з прошуто та в\'яленими томатами', desc: '', weight: '500 грам', price: '220 гривень'},
+            {name: 'Піца фірмова м\'ясна BBQ', desc: '', weight: '550 грам', price: '250 гривень'},
+            {name: 'Піца з салямі чорізо та маринованим перцем чилі', desc: '', weight: '500 грам', price: '210 гривень'},
+            {name: 'Піца з морепродуктами', desc: '', weight: '500 грам', price: '230 гривень'},
+            {name: 'Капрічозо з сирними бортиками', desc: '', weight: '550 грам', price: '250 гривень'},
+            {name: 'Гавайська', desc: '', weight: '500 грам', price: '200 гривень'},
+            {name: 'Піца з печерицями та беконом', desc: '', weight: '500 грам', price: '200 гривень'},
+            {name: 'Піца карбонара', desc: '', weight: '500 грам', price: '220 гривень'},
+            {name: 'Чізкейк з ванільним соусом', desc: '', weight: '150 грам', price: '150 гривень'},
+            {name: 'Шоколадний фондан з морозивом та фруктами', desc: '', weight: '150 грам', price: '150 гривень'},
+            {name: 'Тірамісу', desc: '', weight: '150 грам', price: '140 гривень'},
+            {name: 'Млинці з карамелізованим яблуком', desc: '', weight: '200 грам', price: '90 гривень'},
+            {name: 'Млинці з карамелізованою вишнею', desc: '', weight: '200 грам', price: '100 гривень'},
+            {name: 'Морозиво шоколадне', desc: '', weight: '150 грам', price: '140 гривень'},
+            {name: 'Морозиво ванільне', desc: '', weight: '150 грам', price: '130 гривень'},
+            {name: 'Наполеон', desc: '', weight: '150 грам', price: '150 гривень'},
+            {name: 'Медовик', desc: '', weight: '150 грам', price: '130 гривень'},
+            {name: 'Сирники з вершковым соусом із сезонними ягодами', desc: '', weight: '180 грам', price: '250 гривень'},
+            {name: 'Млинці з шоколадною пастою та бананом', desc: '', weight: '200 грам', price: '180 гривень'},
+            {name: 'Бельгійські вафлі з вершками та сезонними ягодами', desc: '', weight: '250 грам', price: '180 гривень'},
+            {name: 'Американо', desc: '', weight: '120 мілілітрів', price: '50 гривень'},
+            {name: 'Еспресо', desc: '', weight: '30 мілілітрів', price: '50 гривень'},
+            {name: 'Капучіно', desc: '', weight: '180 мілілітрів', price: '60 гривень'},
+            {name: 'Флет уайт', desc: '', weight: '240 мілілітрів', price: '65 гривень'},
+            {name: 'Лате', desc: '', weight: '210 мілілітрів', price: '60 гривень'},
+            {name: 'Карамельний лате з маршмеллоу', desc: '', weight: '240 мілілітрів', price: '70 гривень'},
+            {name: 'Чай в асортименті / Імбир-лимон / Обліпиха-імбир / Ягідно-цитрусовий / Тропічні фрукти', desc: '', weight: '500 мілілітрів', price: '50/80 гривень'},
+            {name: 'Кола / Пепсі / Спрайт', desc: '', weight: '0.5 / 1 літр', price: '55 / 65 гривень'},
+            {name: 'Боржомі', desc: '', weight: '0.5 літр', price: '150 гривень'},
+            {name: 'Сік Садочок / Sandora', desc: '', weight: '1 літр', price: '80 / 120 гривень'},
+            {name: 'Компот/узвар', desc: '', weight: '1 літр', price: '100 гривень'}
+          ]">
+            <div class="border-b border-white/5 pb-4 flex flex-col group hover:border-gold/30 transition-colors">
+              <div class="flex justify-between items-end gap-4">
+                <span x-text="item.name" class="font-display text-sm tracking-widest text-white group-hover:text-gold transition-colors"></span>
+                <div class="flex-grow border-b border-dotted border-white/10 mb-1"></div>
+                <span x-text="item.price" class="text-gold text-xs font-semibold whitespace-nowrap"></span>
+              </div>
+              <div class="flex justify-between items-start mt-1">
+                <span x-text="item.desc" class="text-[9px] text-white/30 uppercase tracking-tighter max-w-[70%]"></span>
+                <span x-text="item.weight" class="text-[9px] text-white/20 italic"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Tab 5: Барна карта (Алкоголь) -->
+        <div x-show="menuTab === 5" x-transition class="grid md:grid-cols-2 gap-x-20 gap-y-6">
+          <template x-for="item in [
+            {name: 'Віскі Jack Daniel\'s / Jack Daniel\'s honey / Hankey Bannister / Red Label / Jameson / Balantines', desc: '', weight: '50 мілілітрів', price: '95/80 гривень'},
+            {name: 'Віскі Jim Beam / Jim Beam apple / Jim Beam honey', desc: '', weight: '50 мілілітрів', price: '85/90 гривень'},
+            {name: 'Ром Capitan Morgan (Gold/Black) / Bacardi', desc: '', weight: '50 мілілітрів', price: '75 / 70 гривень'},
+            {name: 'Мартіні Bianko', desc: '', weight: '50 мілілітрів', price: '35 гривень'},
+            {name: 'Лікер Baileys', desc: '', weight: '50 мілілітрів', price: '110 гривень'},
+            {name: 'Лікер Jagermeister', desc: '', weight: '50 мілілітрів', price: '95 гривень'},
+            {name: 'Горілка Finlandia (класична)', desc: '', weight: '50 мілілітрів', price: '55 гривень'},
+            {name: 'Горілка Немирів (особлива делікатна / Де-Люкс / Пекуча груша)', desc: '', weight: '50 мілілітрів', price: '29 / 30 / 45 гривень'},
+            {name: 'Горілка Хортиця / Грін Дей / Zubrowka / Hetman', desc: '', weight: '50 мілілітрів', price: '35 / 25 / 29 / 26 гривень'},
+            {name: 'Хлібна сльоза / Козацька рада / Хлібний дар', desc: '', weight: '50 мілілітрів', price: '40 / 29 / 35 гривень'},
+            {name: 'Коньяк: Азнаурі 3*', desc: '', weight: '50 мілілітрів', price: '35 гривень'},
+            {name: 'Коньяк: Шабо 5* / Шабо 3*', desc: '', weight: '50 мілілітрів', price: '37 / 40 гривень'},
+            {name: 'Коньяк: Закарпатський 4*', desc: '', weight: '50 мілілітрів', price: '45 гривень'},
+            {name: 'Коньяк: Старий кахеті 3* / Аджарі 3* / Арарат 5*', desc: '', weight: '50 мілілітрів', price: '47 / 75 / 75 гривень'},
+            {name: 'Коньяк: Асканелі 5* / Асканелі 3*', desc: '', weight: '50 мілілітрів', price: '53 / 49 гривень'},
+            {name: 'Шампанське: Fragolino', desc: '', weight: '0.75 літр', price: '410 гривень'},
+            {name: 'Шампанське: Prosecco', desc: '', weight: '0.75 літр', price: '650 гривень'},
+            {name: 'Шампанське: Артемівське', desc: '', weight: '0.75 літр', price: '395 гривень'},
+            {name: 'Шампанське: Latinium', desc: '', weight: '0.75 літр', price: '490 гривень'},
+            {name: 'Шампанське: Asti', desc: '', weight: '0.75 літр', price: '350 гривень'},
+            {name: 'Вино Грузія: Алазанська долина (біле)', desc: '', weight: '50 мілілітрів', price: '30 гривень'},
+            {name: 'Вино Грузія: Алазанська долина (червоне) / Сапераві', desc: '', weight: '50 мілілітрів', price: '35 гривень'},
+            {name: 'Вино Грузія: Цинандалі / Кіндзмараулі', desc: '', weight: '50 мілілітрів', price: '36 / 45 гривень'},
+            {name: 'Вино Україна: Лелека червоне напівсолодке', desc: '', weight: '50 мілілітрів', price: '40 гривень'},
+            {name: 'Вино Україна: Лелека біле напівсолодке', desc: '', weight: '50 мілілітрів', price: '35 гривень'},
+            {name: 'Наливки (Журавлина, Суниця, Персик, Вишня, Малина, Горобина, Слива, Абрикос)', desc: '', weight: '50 мілілітрів', price: '19 гривень'},
+            {name: 'Сет наливок', desc: '', weight: '250 мілілітрів', price: '135 гривень'},
+            {name: 'Пиво на розлив: Бердичівське', desc: '', weight: '0.33 / 0.5 літр', price: '30 / 55 гривень'},
+            {name: 'Пиво на розлив: Бочкове', desc: '', weight: '0.33 / 0.5 літр', price: '35 / 60 гривень'},
+            {name: 'Пиво баночне: Закарпатське (50 гривень), Львівське (45 гривень), Опілля (50 гривень), Hoegaarden (120 гривень), Козел світле/темне (65 гривень)', desc: '', weight: '', price: ''}
+          ]">
+            <div class="border-b border-white/5 pb-4 flex flex-col group hover:border-gold/30 transition-colors">
+              <div class="flex justify-between items-end gap-4">
+                <span x-text="item.name" class="font-display text-sm tracking-widest text-white group-hover:text-gold transition-colors"></span>
+                <div class="flex-grow border-b border-dotted border-white/10 mb-1"></div>
+                <span x-text="item.price" class="text-gold text-xs font-semibold whitespace-nowrap"></span>
+              </div>
+              <div class="flex justify-between items-start mt-1">
+                <span x-text="item.desc" class="text-[9px] text-white/30 uppercase tracking-tighter max-w-[70%]"></span>
+                <span x-text="item.weight" class="text-[9px] text-white/20 italic"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="contacts" class="py-32 px-6 bg-onyx">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
+        <div class="reveal">
+          <h2 class="font-display text-4xl md:text-5xl mb-8 leading-snug">
+            Локація <span class="text-gradient italic">Валенsіа</span>
+          </h2>
+          <div class="space-y-8">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 flex items-center justify-center border border-gold/30 rounded-full text-gold shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-widest text-white/40 mb-1">Наша Адреса</p>
+                <p class="text-white text-lg font-display tracking-wider">м. Вінниця, провулок Костя Широцького</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 flex items-center justify-center border border-gold/30 rounded-full text-gold shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-widest text-white/40 mb-1">Резерв та Інформація</p>
+                <a href="tel:0972353852" class="text-white text-lg font-display tracking-wider hover:text-gold transition-colors">097 235 3852</a>
+              </div>
+            </div>
+          </div>
+          <div class="mt-12">
+            <a href="https://www.google.com/maps/place/%D0%A0%D0%B5%D1%81%D1%82%D0%BE%D1%80%D0%B0%D0%BD+%D0%92%D0%B0%D0%BB%D0%B5%D0%BDsia/@49.2177126,28.4916056,16.25z" target="_blank" class="btn-premium px-10 py-4 text-[10px] inline-block">Маршрут у Google Maps</a>
+          </div>
+        </div>
+        <div class="h-[400px] w-full rounded-sm overflow-hidden border border-gold/10 grayscale-[0.5] hover:grayscale-0 transition-all duration-1000">
+          <iframe 
+            src="https://www.google.com/maps?q=Валенsia,Вінниця,провулок+Костя+Широцького&output=embed" 
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking Form Section -->
+    <section id="booking-form" class="py-32 px-6 bg-obsidian relative" x-data="{ format: 'Весілля', open: false }">
+      <div class="absolute top-0 right-0 w-1/3 h-full bg-gold/5 blur-[120px] pointer-events-none"></div>
+      
+      <div class="max-w-3xl mx-auto reveal">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-4xl md:text-6xl mb-6 tracking-widest italic">Початок <span class="text-gradient not-italic">Події</span></h2>
+          <p class="text-gold/60 text-[10px] uppercase tracking-[0.4em]">Ваша історія починається тут</p>
+        </div>
+
+        <form id="luxury-form" class="grid gap-12">
+          <div class="grid md:grid-cols-2 gap-12">
+            <div class="relative group">
+              <label class="text-[9px] uppercase tracking-[0.2em] text-gold/60 block mb-2">Ваше Ім’я</label>
+              <input required type="text" name="name" class="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-gold transition-colors font-light text-sm placeholder:text-white/10" placeholder="Введіть ваше ім’я">
+            </div>
+            <div class="relative group">
+              <label class="text-[9px] uppercase tracking-[0.2em] text-gold/60 block mb-2">Контактні Дані</label>
+              <input required type="text" name="contact" class="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-gold transition-colors font-light text-sm placeholder:text-white/10" placeholder="Телефон або Telegram">
+            </div>
+          </div>
+
+          <!-- Beautiful Format Selector -->
+          <div>
+            <label class="text-[9px] uppercase tracking-[0.2em] text-gold/60 block mb-6 text-center">Формат Вашої Події</label>
+            <input type="hidden" name="eventFormat" :value="format">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <template x-for="f in ['Весілля', 'День Народження', 'Корпоратив', 'Родинна Вечеря', 'Банкет', 'Інший формат']">
+                <button type="button" 
+                        @click="format = f" 
+                        :class="format === f ? 'border-gold text-gold bg-gold/5' : 'border-white/10 text-white/40'"
+                        class="py-4 px-2 border rounded-sm text-[10px] uppercase tracking-widest transition-all duration-500 hover:border-gold/50"
+                        x-text="f"></button>
+              </template>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-12">
+            <div class="relative group">
+              <label class="text-[9px] uppercase tracking-[0.2em] text-gold/60 block mb-2">Кількість Гостей</label>
+              <input type="text" name="guests" class="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-gold transition-colors font-light text-sm placeholder:text-white/10" placeholder="Наприклад: 50 гостей">
+            </div>
+          </div>
+
+          <div class="relative group">
+            <label class="text-[9px] uppercase tracking-[0.2em] text-gold/60 block mb-2">Деталі та Побажання</label>
+            <textarea name="comment" rows="3" class="w-full bg-transparent border-b border-white/10 py-2 outline-none focus:border-gold transition-colors font-light text-sm placeholder:text-white/10" placeholder="Опишіть ваші побажання щодо кухні, залу або музики..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-premium w-full py-6 mt-6 rounded-sm">Надіслати Запит Менеджеру</button>
+          
+          <div data-form-message class="hidden text-center mt-10 p-10 glass border-gold/30">
+            <p class="text-gold font-display text-2xl mb-4 tracking-widest uppercase">Ваш запит прийнято</p>
+            <p class="text-white/60 text-[10px] uppercase tracking-[0.3em] leading-loose">Менеджер ресторану «Валенsіа» опрацює вашу заявку та зателефонує вам найближчим часом.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-20 px-6 border-t border-white/5 bg-obsidian">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+      <div class="flex flex-col items-center md:items-start">
+        <span class="font-display text-xl tracking-widest text-gradient font-bold">Валенsіа</span>
+        <p class="text-[10px] text-white/30 uppercase tracking-[0.3em] mt-2">The peak of hospitality</p>
+      </div>
+      
+      <div class="flex gap-12">
+        <a href="https://www.instagram.com/valensia.vinn/" target="_blank" class="text-white/40 hover:text-gold transition-colors uppercase text-[9px] tracking-widest">Instagram</a>
+        <a href="https://www.tiktok.com/@sia9026?_t=8lHo5YNY8hS&_r=1&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnD89m5FWT06uikVy4dr61HbH1ALy-SdWjQqMfwnj32JZ2DpdQNkA88vsuMnM_aem_lndyR84VSaUkRJ2d0mmUgA" target="_blank" class="text-white/40 hover:text-gold transition-colors uppercase text-[9px] tracking-widest">TikTok</a>
+      </div>
+
+      <p class="text-[9px] text-white/20 uppercase tracking-[0.2em]">© 2026 VALENSIA ELITE. ALL RIGHTS RESERVED.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Optional: unobserve after showing once
+            // observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // Form Handling
+      const form = document.getElementById('luxury-form');
+      const message = form.querySelector('[data-form-message]');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = 'ОПРАЦЮВАННЯ...';
+
+        const formData = Object.fromEntries(new FormData(form).entries());
+
+        try {
+          const res = await fetch('/api/booking', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+          
+          if (res.ok) {
+            message.classList.remove('hidden');
+            form.reset();
+            submitBtn.classList.add('hidden');
+            document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth' });
+          } else {
+            alert('Помилка при відправці. Спробуйте пізніше або зателефонуйте нам.');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Помилка мережі. Перевірте з’єднання.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
